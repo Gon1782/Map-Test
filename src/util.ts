@@ -1,5 +1,7 @@
 import { Zcode } from "./types/interface";
+import { createBrowserHistory } from "history";
 
+export const history = createBrowserHistory();
 export const zcode: Zcode = {
   서울: "11",
   부산: "26",

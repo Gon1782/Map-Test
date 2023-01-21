@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
 import { QueryClientProvider, QueryClient } from "react-query";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import Router from './shared/router';
 
 const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
@@ -14,7 +14,7 @@ declare global {
 
 root.render(
   <QueryClientProvider client={queryClient}>
-    <App />
+    <Router />
   </QueryClientProvider>
 );
 

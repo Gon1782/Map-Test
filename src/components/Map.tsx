@@ -1,6 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useRef, useEffect, useState } from "react";
 import { Data } from "../types/interface";
+import { useNavigate } from "react-router-dom";
 
 const { kakao } = window;
 
@@ -10,24 +10,27 @@ interface Props {
 }
 
 const Map = ({ data, myLocation }: Props) => {
+  const navigate = useNavigate();
   const mapRef = useRef(null);
   const [mapA, setMap] = useState<any>("");
 
-  const arrUnique = data.items.item.filter((stat: any, idx: number, arr: any) => {
-    return arr.findIndex((item: any) => item.statId === stat.statId) === idx;
-  });
-
   useEffect(() => {
+    const arrUnique = data.items.item.filter((stat: any, idx: number, arr: any) => {
+      return arr.findIndex((item: any) => item.statId === stat.statId) === idx;
+    });
+
     const options = {
       center: myLocation,
       level: 2,
     };
 
+    console.log(arrUnique);
+
     const map = new kakao.maps.Map(mapRef.current, options);
     setMap(map);
 
     const zoomControl = new kakao.maps.ZoomControl();
-    map.setDraggable(false)
+    map.setDraggable(false);
     map.addControl(zoomControl, kakao.maps.ControlPosition.LEFT);
 
     const imageSrc = require("../assets/thunder.png");
@@ -35,24 +38,31 @@ const Map = ({ data, myLocation }: Props) => {
     new kakao.maps.Marker({
       map: map,
       position: myLocation,
+      clickable: true,
     });
     const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
     for (const x of arrUnique) {
-      const content = `<div style="background: white;
-    border: 1px solid black;"><span>${x.statNm}</span></div>`;
+      const content = `<div style="background: white; border: 1px solid black;"><span>${x.statNm}</span></div>`;
       const position = new kakao.maps.LatLng(x.lat, x.lng);
-      new kakao.maps.CustomOverlay({
-        map: map,
+      const overlay = new kakao.maps.CustomOverlay({
         position,
         content,
         yAnchor: 3.5,
       });
-      new kakao.maps.Marker({
+      const marker = new kakao.maps.Marker({
         map: map,
         position,
         image: markerImage,
       });
+      kakao.maps.event.addListener(marker, "mouseover", () => {
+        overlay.setMap(map);
+      });
+      kakao.maps.event.addListener(marker, "mouseout", () => {
+        overlay.setMap(null);
+      });
+      kakao.maps.event.addListener(marker, "click", () => navigate(`${x.statId}`, { state: data }));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [text, setText] = useState("");
