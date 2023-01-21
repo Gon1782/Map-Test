@@ -8,7 +8,7 @@ import useLocation from "./hooks/useLocation";
 const { kakao } = window;
 
 const App = () => {
-  const [myLocation, setMyLocation] = useState<any>("");
+  const [myLocation, setMyLocation] = useState(new kakao.maps.LatLng(37.49810223154336, 127.0327612337389));
   const [zcode, zscode] = useLocation(myLocation);
 
   useEffect(() => {

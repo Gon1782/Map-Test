@@ -10,7 +10,7 @@ const useLocation = (myLocation: any) => {
 
   const geocoder = new kakao.maps.services.Geocoder();
 
-  const callback = function (result: Result[], status: string) {
+  const callback = (result: Result[], status: string) => {
     if (status === kakao.maps.services.Status.OK) {
       const arr = { ...result };
       const doe = arr[0].address.region_1depth_name;

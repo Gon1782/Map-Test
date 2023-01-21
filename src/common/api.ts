@@ -9,6 +9,6 @@ interface DataKey {
 
 export const getData = async ({ queryKey }: DataKey) => {
   const [zcode, zscode] = queryKey;
-  const { data } = await axios.get<Data>(`${SERVER_URL}&numOfRows=100&pageNo=1&dataType=JSON&zcode=${zcode}&zscode=${zscode}`);
+  const { data } = await axios.get<Data>(`${SERVER_URL}&numOfRows=3000&pageNo=1&dataType=JSON&zcode=${zcode}&zscode=${zscode}`);
   return data;
 };
