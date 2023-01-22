@@ -7,9 +7,11 @@ const { kakao } = window;
 interface Props {
   data: Data;
   myLocation: any;
+  setLocation: any;
+  setMyLocation: any;
 }
 
-const Map = ({ data, myLocation }: Props) => {
+const Map = ({ data, myLocation, setLocation, setMyLocation }: Props) => {
   const navigate = useNavigate();
   const mapRef = useRef(null);
   const [mapA, setMap] = useState<any>("");
@@ -23,8 +25,6 @@ const Map = ({ data, myLocation }: Props) => {
       center: myLocation,
       level: 2,
     };
-
-    console.log(arrUnique);
 
     const map = new kakao.maps.Map(mapRef.current, options);
     setMap(map);
@@ -60,7 +60,7 @@ const Map = ({ data, myLocation }: Props) => {
       kakao.maps.event.addListener(marker, "mouseout", () => {
         overlay.setMap(null);
       });
-      kakao.maps.event.addListener(marker, "click", () => navigate(`${x.statId}`, { state: data }));
+      kakao.maps.event.addListener(marker, "click", () => navigate(`${x.statId}`, { state: data.items.item.filter(y => y.statId === x.statId) }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -94,6 +94,8 @@ const Map = ({ data, myLocation }: Props) => {
 
         // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
         mapA.setCenter(coords);
+        setLocation(coords);
+        setMyLocation(coords);
       }
     });
   };

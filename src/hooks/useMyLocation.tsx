@@ -4,7 +4,7 @@ import * as Z from "../util";
 
 const { kakao } = window;
 
-const useLocation = (myLocation: any) => {
+const useMyLocation = () => {
   const [zcode, setZcode] = useState("");
   const [zscode, setZscode] = useState("");
 
@@ -72,11 +72,13 @@ const useLocation = (myLocation: any) => {
     }
   };
 
-  if (myLocation) {
-    geocoder.coord2Address(myLocation.getLng(), myLocation.getLat(), callback);
-  }
+  const setLocation: any = (location: any) => {
+    if (location) {
+      geocoder.coord2Address(location.getLng(), location.getLat(), callback);
+    }
+  };
 
-  return [zcode, zscode];
+  return [zcode, zscode, setLocation];
 };
 
-export default useLocation;
+export default useMyLocation;

@@ -1,7 +1,9 @@
 import ReactDOM from "react-dom/client";
 import { QueryClientProvider, QueryClient } from "react-query";
+import { Provider } from "react-redux";
+import store from "./redux/config/configStore";
 import reportWebVitals from "./reportWebVitals";
-import Router from './shared/router';
+import Router from "./shared/router";
 
 const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
@@ -14,7 +16,9 @@ declare global {
 
 root.render(
   <QueryClientProvider client={queryClient}>
-    <Router />
+    <Provider store={store}>
+      <Router />
+    </Provider>
   </QueryClientProvider>
 );
 
